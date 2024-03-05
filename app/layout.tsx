@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "./components/view/navbar";
+import { SmoothScrollbar } from "./components/smoothscrollbar";
+import LoaderContextProvider from "./context/loadingContext";
+import { Loader } from "./components/loader";
+import { IframeContextProvider } from "./context/iframecontext";
+import { Footer } from "./components/view/footer";
+import { Toaster } from "react-hot-toast";
+import { Newsletter } from "./components/view/newsletter";
 
 const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({
+  display: "swap",
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["700","600","500","400"]
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +30,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className}  ${outfit.variable}`}>
+        <SmoothScrollbar>
+          <LoaderContextProvider>
+            <IframeContextProvider>
+              <Newsletter />
+              <Toaster />
+              <Loader />
+              <Navbar />
+              {children}
+              <Footer />
+            </IframeContextProvider>
+          </LoaderContextProvider>
+        </SmoothScrollbar>
+      </body>
     </html>
   );
 }
